@@ -14,26 +14,26 @@ css_style = """
     }
     .title {
         color: #000080;
-        font-size: 2.2em;
+        font-size: 2.5em;
         margin-bottom: 0.5rem;
         font-weight: bold;
     }
     .subtitle {
         color: #CB0509;
-        font-size: 2.2em;
+        font-size: 2.5em;
         margin-bottom: 1rem;
         font-weight: bold;
         display: inline;
     }
     .instruction {
         text-align: center;
-        font-size: 1.1em;
+        font-size: 1.2em;
         margin-bottom: 1.5rem;
     }
     .chart-container {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 5px;
+        gap: 10px;
         margin-top: 20px;
         position: relative;
         width: fit-content;
@@ -42,13 +42,13 @@ css_style = """
     }
     .week-grid {
         display: grid;
-        grid-template-columns: repeat(52, 12px);
-        grid-auto-rows: 12px;
-        gap: 2px;
+        grid-template-columns: repeat(52, 14px);
+        grid-auto-rows: 14px;
+        gap: 3px;
     }
     .week-cell {
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
         border: 1px solid #000080;
         background-color: #fff;
     }
@@ -60,32 +60,32 @@ css_style = """
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        height: calc(52 * 14px); /* Ajusta para altura total da grid */
-        margin-top: 8px;
-        font-size: 0.8em;
+        height: calc(52 * 16px); /* Ajusta para altura total da grid */
+        margin-top: 12px;
+        font-size: 0.9em;
         color: #000080;
         font-weight: bold;
     }
     .week-labels {
         display: flex;
         justify-content: space-between;
-        margin-top: 10px;
-        width: calc(52 * 14px); /* Ajusta para largura total da grid */
-        font-size: 0.8em;
+        margin-top: 15px;
+        width: calc(52 * 16px); /* Ajusta para largura total da grid */
+        font-size: 0.9em;
         color: #000080;
         font-weight: bold;
     }
     .week-title {
         text-align: center;
-        margin-top: 10px;
-        font-size: 1em;
+        margin-top: 15px;
+        font-size: 1.2em;
         color: #000080;
         font-weight: bold;
     }
     .year-title {
         text-align: center;
-        margin-bottom: 5px;
-        font-size: 1em;
+        margin-bottom: 10px;
+        font-size: 1.2em;
         color: #000080;
         font-weight: bold;
         writing-mode: vertical-rl;
