@@ -30,40 +30,26 @@ css_style = """
         font-size: 1.1em;
         margin-bottom: 1.5rem;
     }
-    .chart {
+    .chart-container {
         display: flex;
         justify-content: center;
         margin-top: 2rem;
+        position: relative;
     }
-    .years, .months, .weeks {
+    .years, .weeks {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         list-style-type: none;
         padding: 0;
         margin: 0 auto;
-        max-width: 90%;
     }
-    .years > li, .months > li, .weeks > li {
+    .weeks > li {
         margin: 1px;
         background-color: #f5f5f5;
         border: 1px solid #000080;
-        text-align: center;
-        padding: 5px;
-        cursor: pointer;
-    }
-    .years > li {
-        width: 12px;
-        height: 12px;
-    }
-    .months > li {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-    }
-    .weeks > li {
         width: 8px;
         height: 8px;
+        cursor: pointer;
     }
     .labels {
         font-size: 1em;
@@ -82,6 +68,31 @@ css_style = """
         color: #CB0509;
         text-decoration: none;
     }
+    .age-label, .week-label {
+        position: absolute;
+        font-weight: bold;
+        color: #000080;
+    }
+    .age-label {
+        left: -50px;
+        top: 50%;
+        transform: rotate(-90deg);
+    }
+    .week-label {
+        top: -30px;
+    }
+    .arrow {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .age-arrow {
+        left: -70px;
+        top: 45%;
+        transform: rotate(-90deg);
+    }
+    .week-arrow {
+        top: -50px;
+    }
 </style>
 """
 
@@ -91,17 +102,8 @@ st.markdown(css_style, unsafe_allow_html=True)
 st.markdown("<div class='title-box'><span class='title'>Sua Vida em </span><span class='subtitle'>Semanas</span></div>", unsafe_allow_html=True)
 st.markdown("<div class='instruction'>Digite sua data de nascimento:</div>", unsafe_allow_html=True)
 
-# Selecionar data de nascimento
-col1, col2, col3 = st.columns([1, 1, 1])
-
-with col1:
-    dia = st.selectbox("Dia", list(range(1, 32)), index=0)
-with col2:
-    mes = st.selectbox("Mês", list(range(1, 13)), index=0)
-with col3:
-    ano = st.selectbox("Ano", list(range(1900, datetime.date.today().year + 1)), index=99)
-
-data_nascimento = datetime.date(ano, mes, dia)
+# Selecionar data de nascimento no formato dd/mm/aaaa
+data_nascimento = st.date_input("Data de nascimento:", value=datetime.date(2000, 1, 1), format="DD/MM/YYYY")
 
 # Calcular idade e semanas vividas
 hoje = datetime.date.today()
@@ -112,14 +114,54 @@ semanas_vividas = ((hoje - data_nascimento).days) // 7
 max_anos = 90
 semanas_por_ano = 52
 
-# Visualização das semanas (por padrão)
+# Visualização das semanas
 st.markdown("<div class='labels'>Semana do Ano</div>", unsafe_allow_html=True)
+
+# Container para a visualização e as legendas
+st.markdown("""
+<div class='chart-container'>
+    <!-- Label para a idade -->
+    <div class='age-label'>
+        Idade
+    </div>
+    <!-- Label para as semanas do ano -->
+    <div class='week-label'>
+        <span>Semana do Ano</span>
+    </div>
+    <!-- Seta para idade -->
+    <div class='age-arrow arrow'>
+        &#8595;
+    </div>
+    <!-- Seta para semana do ano -->
+    <div class='week-arrow arrow'>
+        &#8594;
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Renderizar a grade de semanas
 semanas_html = "<ul class='weeks'>"
 for semana in range(1, semanas_por_ano * max_anos + 1):
     cor = "#000080" if semana <= semanas_vividas else "#d3d3d3"
     semanas_html += f"<li style='background-color: {cor};'></li>"
 semanas_html += "</ul>"
 st.markdown(semanas_html, unsafe_allow_html=True)
+
+# Adicionar números representando a idade (lado esquerdo) e as semanas do ano (acima)
+idade_texto = "<div style='position: relative; display: flex; justify-content: center; margin-top: 10px;'>"
+idade_texto += "<div style='position: absolute; left: -45px;'>"
+for i in range(0, max_anos + 1, 5):
+    idade_texto += f"<div style='height: 15px; font-weight: bold; color: #000080;'>{i}</div>"
+idade_texto += "</div>"
+
+semanas_texto = "<div style='position: absolute; top: -25px; width: 100%; display: flex; justify-content: space-around;'>"
+for i in range(1, semanas_por_ano + 1, 5):
+    semanas_texto += f"<div style='width: 20px; text-align: center; font-weight: bold; color: #000080;'>{i}</div>"
+semanas_texto += "</div>"
+idade_texto += semanas_texto
+idade_texto += "</div>"
+
+st.markdown(idade_texto, unsafe_allow_html=True)
 
 st.markdown("<div class='labels'>Idade</div>", unsafe_allow_html=True)
 st.write(f"Idade: {idade_anos} anos")
