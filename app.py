@@ -60,9 +60,8 @@ css_style = """
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        margin-right: 5px;
         height: calc(52 * 14px); /* Ajusta para altura total da grid */
-        margin-top: 12px;
+        margin-top: 8px;
         font-size: 0.8em;
         color: #000080;
         font-weight: bold;
@@ -76,10 +75,21 @@ css_style = """
         color: #000080;
         font-weight: bold;
     }
-    .arrow {
+    .week-title {
+        text-align: center;
+        margin-top: 10px;
         font-size: 1em;
         color: #000080;
         font-weight: bold;
+    }
+    .year-title {
+        text-align: center;
+        margin-bottom: 5px;
+        font-size: 1em;
+        color: #000080;
+        font-weight: bold;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
     }
 </style>
 """
@@ -102,17 +112,23 @@ semanas_vividas = ((hoje - data_nascimento).days) // 7
 max_anos = 90
 semanas_por_ano = 52
 
-# Labels de idade na lateral
-age_labels_html = "<div class='age-labels'>"
-for i in range(0, max_anos + 1, 5):
-    age_labels_html += f"<div>{i}</div>"
-age_labels_html += "</div>"
+# Título centralizado para "Semanas do Ano"
+st.markdown("<div class='week-title'>Semanas do Ano</div>", unsafe_allow_html=True)
 
 # Labels de semanas na parte superior
 week_labels_html = "<div class='week-labels'>"
 for i in range(1, semanas_por_ano + 1, 5):
     week_labels_html += f"<div>{i}</div>"
 week_labels_html += "</div>"
+
+# Adiciona o rótulo "Anos" ao lado esquerdo da grade
+st.markdown("<div class='year-title'>Anos</div>", unsafe_allow_html=True)
+
+# Labels de idade na lateral (escala de 5 em 5 anos)
+age_labels_html = "<div class='age-labels'>"
+for i in range(0, max_anos + 1, 5):
+    age_labels_html += f"<div>{i}</div>"
+age_labels_html += "</div>"
 
 # Renderiza a grade de semanas
 week_cells_html = "<div class='week-grid'>"
@@ -127,13 +143,6 @@ st.markdown(f"""
 <div class='chart-container'>
     {age_labels_html}
     {week_cells_html}
-</div>
-""", unsafe_allow_html=True)
-
-# Adicionar setas e rótulos para "Idade" e "Semana do Ano"
-st.markdown("""
-<div style='display: flex; justify-content: center; align-items: center; margin-top: 10px;'>
-    <div style='transform: rotate(-90deg); margin-right: 20px;' class='arrow'>Age &#8595;</div>
 </div>
 """, unsafe_allow_html=True)
 
