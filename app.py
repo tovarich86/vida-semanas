@@ -33,7 +33,7 @@ css_style = """
     .chart-container {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 10px;
+        gap: 5px;
         margin-top: 20px;
         position: relative;
         width: fit-content;
@@ -42,14 +42,13 @@ css_style = """
     }
     .week-grid {
         display: grid;
-        grid-template-columns: repeat(52, 10px);
-        grid-auto-rows: 10px;
+        grid-template-columns: repeat(52, 12px);
+        grid-auto-rows: 12px;
         gap: 2px;
-        margin-left: 20px;
     }
     .week-cell {
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
         border: 1px solid #000080;
         background-color: #fff;
     }
@@ -62,20 +61,27 @@ css_style = """
         align-items: center;
         justify-content: space-between;
         margin-right: 10px;
-        height: calc(52 * 12px); /* Ajusta para altura total da grid */
-        margin-top: 8px;
+        height: calc(52 * 14px); /* Ajusta para altura total da grid */
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #000080;
+        font-weight: bold;
     }
     .week-labels {
         display: flex;
         justify-content: space-between;
         margin-top: 10px;
-        margin-left: 20px;
-        width: calc(52 * 12px); /* Ajusta para largura total da grid */
+        width: calc(52 * 14px); /* Ajusta para largura total da grid */
+        font-size: 0.9em;
+        color: #000080;
+        font-weight: bold;
     }
     .arrow {
-        font-size: 1.5em;
+        font-size: 1.3em;
         font-weight: bold;
         color: #000080;
+        text-align: center;
+        margin-top: 20px;
     }
 </style>
 """
@@ -129,7 +135,7 @@ st.markdown(f"""
 # Adicionar setas e títulos para "Idade" e "Semana do Ano"
 st.markdown("""
 <div style='display: flex; justify-content: center; align-items: center; margin-top: 20px;'>
-    <div style='transform: rotate(-90deg); margin-right: 20px;' class='arrow'>Idade &#8594;</div>
+    <div style='transform: rotate(-90deg); margin-right: 10px;' class='arrow'>Idade &#8594;</div>
     <div class='arrow'>Semana do Ano &#8594;</div>
 </div>
 """, unsafe_allow_html=True)
