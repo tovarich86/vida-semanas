@@ -33,7 +33,7 @@ css_style = """
     .chart-container {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 5px;
+        gap: 10px;
         margin-top: 20px;
         position: relative;
         width: fit-content;
@@ -62,26 +62,19 @@ css_style = """
         justify-content: space-between;
         margin-right: 10px;
         height: calc(52 * 14px); /* Ajusta para altura total da grid */
-        margin-top: 10px;
-        font-size: 0.9em;
+        margin-top: 8px;
+        font-size: 0.8em;
         color: #000080;
         font-weight: bold;
     }
     .week-labels {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         margin-top: 10px;
         width: calc(52 * 14px); /* Ajusta para largura total da grid */
-        font-size: 0.9em;
+        font-size: 1em;
         color: #000080;
         font-weight: bold;
-    }
-    .arrow {
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #000080;
-        text-align: center;
-        margin-top: 20px;
     }
 </style>
 """
@@ -106,14 +99,13 @@ semanas_por_ano = 52
 
 # Labels de idade na lateral
 age_labels_html = "<div class='age-labels'>"
-for i in range(0, max_anos + 1, 5):
+for i in range(0, max_anos + 1, 10):
     age_labels_html += f"<div>{i}</div>"
 age_labels_html += "</div>"
 
 # Labels de semanas na parte superior
 week_labels_html = "<div class='week-labels'>"
-for i in range(1, semanas_por_ano + 1, 5):
-    week_labels_html += f"<div>{i}</div>"
+week_labels_html += "Semana do Ano"
 week_labels_html += "</div>"
 
 # Renderiza a grade de semanas
@@ -124,19 +116,11 @@ for semana in range(1, semanas_por_ano * max_anos + 1):
 week_cells_html += "</div>"
 
 # Junta todas as partes para a visualização final
+st.markdown(week_labels_html, unsafe_allow_html=True)
 st.markdown(f"""
 <div class='chart-container'>
     {age_labels_html}
     {week_cells_html}
-</div>
-{week_labels_html}
-""", unsafe_allow_html=True)
-
-# Adicionar setas e títulos para "Idade" e "Semana do Ano"
-st.markdown("""
-<div style='display: flex; justify-content: center; align-items: center; margin-top: 20px;'>
-    <div style='transform: rotate(-90deg); margin-right: 10px;' class='arrow'>Idade &#8594;</div>
-    <div class='arrow'>Semana do Ano &#8594;</div>
 </div>
 """, unsafe_allow_html=True)
 
