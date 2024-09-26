@@ -33,7 +33,7 @@ css_style = """
     .chart-container {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 10px;
+        gap: 5px;
         margin-top: 20px;
         position: relative;
         width: fit-content;
@@ -60,18 +60,23 @@ css_style = """
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        margin-right: 10px;
+        margin-right: 5px;
         height: calc(52 * 14px); /* Ajusta para altura total da grid */
-        margin-top: 8px;
+        margin-top: 12px;
         font-size: 0.8em;
         color: #000080;
         font-weight: bold;
     }
     .week-labels {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         margin-top: 10px;
         width: calc(52 * 14px); /* Ajusta para largura total da grid */
+        font-size: 0.8em;
+        color: #000080;
+        font-weight: bold;
+    }
+    .arrow {
         font-size: 1em;
         color: #000080;
         font-weight: bold;
@@ -99,13 +104,14 @@ semanas_por_ano = 52
 
 # Labels de idade na lateral
 age_labels_html = "<div class='age-labels'>"
-for i in range(0, max_anos + 1, 10):
+for i in range(0, max_anos + 1, 5):
     age_labels_html += f"<div>{i}</div>"
 age_labels_html += "</div>"
 
 # Labels de semanas na parte superior
 week_labels_html = "<div class='week-labels'>"
-week_labels_html += "Semana do Ano"
+for i in range(1, semanas_por_ano + 1, 5):
+    week_labels_html += f"<div>{i}</div>"
 week_labels_html += "</div>"
 
 # Renderiza a grade de semanas
@@ -121,6 +127,13 @@ st.markdown(f"""
 <div class='chart-container'>
     {age_labels_html}
     {week_cells_html}
+</div>
+""", unsafe_allow_html=True)
+
+# Adicionar setas e rótulos para "Idade" e "Semana do Ano"
+st.markdown("""
+<div style='display: flex; justify-content: center; align-items: center; margin-top: 10px;'>
+    <div style='transform: rotate(-90deg); margin-right: 20px;' class='arrow'>Age &#8595;</div>
 </div>
 """, unsafe_allow_html=True)
 
