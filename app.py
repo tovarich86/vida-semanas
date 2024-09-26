@@ -31,67 +31,51 @@ css_style = """
         margin-bottom: 1.5rem;
     }
     .chart-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        margin-top: 20px;
         position: relative;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
     }
-    .years, .weeks {
-        display: flex;
-        flex-wrap: wrap;
-        list-style-type: none;
-        padding: 0;
-        margin: 0 auto;
+    .week-grid {
+        display: grid;
+        grid-template-columns: repeat(52, 10px);
+        grid-auto-rows: 10px;
+        gap: 2px;
+        margin-left: 20px;
     }
-    .weeks > li {
-        margin: 1px;
-        background-color: #f5f5f5;
+    .week-cell {
+        width: 10px;
+        height: 10px;
         border: 1px solid #000080;
-        width: 8px;
-        height: 8px;
-        cursor: pointer;
+        background-color: #fff;
     }
-    .labels {
-        font-size: 1em;
-        color: #000080;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 1.5rem;
+    .week-cell.lived {
+        background-color: #000080;
     }
-    .reference {
-        text-align: center;
-        font-size: 0.9em;
-        color: #555;
-        margin-top: 2rem;
+    .age-labels {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 10px;
+        height: calc(52 * 12px); /* Ajusta para altura total da grid */
+        margin-top: 8px;
     }
-    .reference a {
-        color: #CB0509;
-        text-decoration: none;
-    }
-    .age-label, .week-label {
-        position: absolute;
-        font-weight: bold;
-        color: #000080;
-    }
-    .age-label {
-        left: -50px;
-        top: 50%;
-        transform: rotate(-90deg);
-    }
-    .week-label {
-        top: -30px;
+    .week-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-left: 20px;
+        width: calc(52 * 12px); /* Ajusta para largura total da grid */
     }
     .arrow {
         font-size: 1.5em;
         font-weight: bold;
-    }
-    .age-arrow {
-        left: -70px;
-        top: 45%;
-        transform: rotate(-90deg);
-    }
-    .week-arrow {
-        top: -50px;
+        color: #000080;
     }
 </style>
 """
@@ -114,58 +98,41 @@ semanas_vividas = ((hoje - data_nascimento).days) // 7
 max_anos = 90
 semanas_por_ano = 52
 
-# Visualização das semanas
-st.markdown("<div class='labels'>Semana do Ano</div>", unsafe_allow_html=True)
+# Labels de idade na lateral
+age_labels_html = "<div class='age-labels'>"
+for i in range(0, max_anos + 1, 5):
+    age_labels_html += f"<div>{i}</div>"
+age_labels_html += "</div>"
 
-# Container para a visualização e as legendas
-st.markdown("""
+# Labels de semanas na parte superior
+week_labels_html = "<div class='week-labels'>"
+for i in range(1, semanas_por_ano + 1, 5):
+    week_labels_html += f"<div>{i}</div>"
+week_labels_html += "</div>"
+
+# Renderiza a grade de semanas
+week_cells_html = "<div class='week-grid'>"
+for semana in range(1, semanas_por_ano * max_anos + 1):
+    cor = "lived" if semana <= semanas_vividas else ""
+    week_cells_html += f"<div class='week-cell {cor}'></div>"
+week_cells_html += "</div>"
+
+# Junta todas as partes para a visualização final
+st.markdown(f"""
 <div class='chart-container'>
-    <!-- Label para a idade -->
-    <div class='age-label'>
-        Idade
-    </div>
-    <!-- Label para as semanas do ano -->
-    <div class='week-label'>
-        <span>Semana do Ano</span>
-    </div>
-    <!-- Seta para idade -->
-    <div class='age-arrow arrow'>
-        &#8595;
-    </div>
-    <!-- Seta para semana do ano -->
-    <div class='week-arrow arrow'>
-        &#8594;
-    </div>
+    {age_labels_html}
+    {week_cells_html}
 </div>
+{week_labels_html}
 """, unsafe_allow_html=True)
 
-# Renderizar a grade de semanas
-semanas_html = "<ul class='weeks'>"
-for semana in range(1, semanas_por_ano * max_anos + 1):
-    cor = "#000080" if semana <= semanas_vividas else "#d3d3d3"
-    semanas_html += f"<li style='background-color: {cor};'></li>"
-semanas_html += "</ul>"
-st.markdown(semanas_html, unsafe_allow_html=True)
-
-# Adicionar números representando a idade (lado esquerdo) e as semanas do ano (acima)
-idade_texto = "<div style='position: relative; display: flex; justify-content: center; margin-top: 10px;'>"
-idade_texto += "<div style='position: absolute; left: -45px;'>"
-for i in range(0, max_anos + 1, 5):
-    idade_texto += f"<div style='height: 15px; font-weight: bold; color: #000080;'>{i}</div>"
-idade_texto += "</div>"
-
-semanas_texto = "<div style='position: absolute; top: -25px; width: 100%; display: flex; justify-content: space-around;'>"
-for i in range(1, semanas_por_ano + 1, 5):
-    semanas_texto += f"<div style='width: 20px; text-align: center; font-weight: bold; color: #000080;'>{i}</div>"
-semanas_texto += "</div>"
-idade_texto += semanas_texto
-idade_texto += "</div>"
-
-st.markdown(idade_texto, unsafe_allow_html=True)
-
-st.markdown("<div class='labels'>Idade</div>", unsafe_allow_html=True)
-st.write(f"Idade: {idade_anos} anos")
-st.write(f"Semanas vividas: {semanas_vividas}")
+# Adicionar setas e títulos para "Idade" e "Semana do Ano"
+st.markdown("""
+<div style='display: flex; justify-content: center; align-items: center; margin-top: 20px;'>
+    <div style='transform: rotate(-90deg); margin-right: 20px;' class='arrow'>Idade &#8594;</div>
+    <div class='arrow'>Semana do Ano &#8594;</div>
+</div>
+""", unsafe_allow_html=True)
 
 # Referência ao site original
 st.markdown(
